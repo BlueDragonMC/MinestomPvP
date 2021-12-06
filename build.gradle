@@ -3,6 +3,9 @@ plugins {
     id 'maven-publish'
 }
 
+sourceCompatibility = 17
+targetCompatibility = 17
+
 group 'io.github.bloepiloepi'
 version '1.0'
 
