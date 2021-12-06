@@ -159,7 +159,7 @@ public class AttackManager {
 		
 		boolean sweeping = false;
 		if (!legacy && strongAttack && !critical && !sprintAttack && player.isOnGround()) {
-			double lastMoveDistance = ((Pos) ReflectionUtils.getDeclaredField(player, "previousPosition")).distance(player.getPosition()) * 0.6;
+			double lastMoveDistance = ((Pos) ReflectionUtils.getDeclaredField(Entity.class, player, "previousPosition")).distance(player.getPosition()) * 0.6;
 			if (lastMoveDistance < player.getAttributeValue(Attribute.MOVEMENT_SPEED)) {
 				Tool tool = Tool.fromMaterial(player.getItemInMainHand().getMaterial());
 				if (tool != null && tool.isSword()) {

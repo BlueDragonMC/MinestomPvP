@@ -10,9 +10,8 @@ public class ReflectionUtils {
     // map the field name to the Field object if it's cached
     private static final Cache<String, Field> fieldCache = Caffeine.newBuilder().build();
 
-    private static Field accessField(Object object, String fieldName) {
+    private static Field accessField(Class<?> clazz, Object object, String fieldName) {
         return fieldCache.get(object.getClass().getName() + "." + fieldName, (key) -> {
-            Class<?> clazz = object.getClass();
             try {
                 Field field = clazz.getDeclaredField(fieldName);
                 field.setAccessible(true);
@@ -22,6 +21,19 @@ public class ReflectionUtils {
             }
             return null;
         });
+    }
+
+    private static Field accessField(Object object, String fieldName) {
+        return accessField(object.getClass(), object, fieldName);
+    }
+
+    public static Object getDeclaredField(Class<?> clazz, Object object, String fieldName) {
+        try {
+            return accessField(clazz, object, fieldName).get(object);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static Object getDeclaredField(Object object, String fieldName) {
