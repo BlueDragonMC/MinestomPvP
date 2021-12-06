@@ -4,15 +4,21 @@ import io.github.bloepiloepi.pvp.damage.CustomDamageType;
 import io.github.bloepiloepi.pvp.enchantment.EnchantmentUtils;
 import io.github.bloepiloepi.pvp.enchantment.enchantments.ProtectionEnchantment;
 import io.github.bloepiloepi.pvp.enums.Tool;
-import io.github.bloepiloepi.pvp.mixins.LivingEntityAccessor;
 import io.github.bloepiloepi.pvp.projectile.Arrow;
+import io.github.bloepiloepi.pvp.utils.ReflectionUtils;
 import it.unimi.dsi.fastutil.Pair;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
-import net.minestom.server.entity.*;
+import net.minestom.server.entity.Entity;
+import net.minestom.server.entity.EntityProjectile;
+import net.minestom.server.entity.EquipmentSlot;
+import net.minestom.server.entity.GameMode;
+import net.minestom.server.entity.ItemEntity;
+import net.minestom.server.entity.LivingEntity;
+import net.minestom.server.entity.Player;
 import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.entity.metadata.LivingEntityMeta;
 import net.minestom.server.entity.metadata.arrow.AbstractArrowMeta;
@@ -87,7 +93,7 @@ public class EntityUtils {
 		}
 		int millis = ticks * MinecraftServer.TICK_MS;
 		
-		long fireExtinguishTime = living ? ((LivingEntityAccessor) livingEntity).fireExtinguishTime() :
+		long fireExtinguishTime = living ? (Long) ReflectionUtils.getDeclaredField(livingEntity, "fireExtinguishTime") :
 				Tracker.fireExtinguishTime.getOrDefault(entity.getUuid(), 0L);
 		if (System.currentTimeMillis() + millis > fireExtinguishTime) {
 			setFireForDuration(entity, millis, TimeUnit.MILLISECOND);

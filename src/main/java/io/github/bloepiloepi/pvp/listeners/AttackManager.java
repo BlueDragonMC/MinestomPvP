@@ -1,31 +1,39 @@
 package io.github.bloepiloepi.pvp.listeners;
 
-import io.github.bloepiloepi.pvp.enums.Tool;
-import io.github.bloepiloepi.pvp.events.FinalAttackEvent;
-import io.github.bloepiloepi.pvp.legacy.LegacyKnockbackSettings;
 import io.github.bloepiloepi.pvp.damage.CustomDamageType;
 import io.github.bloepiloepi.pvp.enchantment.EnchantmentUtils;
 import io.github.bloepiloepi.pvp.entities.EntityGroup;
 import io.github.bloepiloepi.pvp.entities.EntityUtils;
 import io.github.bloepiloepi.pvp.entities.Tracker;
+import io.github.bloepiloepi.pvp.enums.Tool;
 import io.github.bloepiloepi.pvp.events.EntityKnockbackEvent;
+import io.github.bloepiloepi.pvp.events.FinalAttackEvent;
 import io.github.bloepiloepi.pvp.events.LegacyKnockbackEvent;
 import io.github.bloepiloepi.pvp.events.PlayerSpectateEvent;
-import io.github.bloepiloepi.pvp.mixins.EntityAccessor;
+import io.github.bloepiloepi.pvp.legacy.LegacyKnockbackSettings;
+import io.github.bloepiloepi.pvp.utils.ReflectionUtils;
 import io.github.bloepiloepi.pvp.utils.SoundManager;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.attribute.Attribute;
 import net.minestom.server.collision.BoundingBox;
 import net.minestom.server.coordinate.Pos;
-import net.minestom.server.entity.*;
+import net.minestom.server.entity.Entity;
+import net.minestom.server.entity.EntityProjectile;
+import net.minestom.server.entity.ExperienceOrb;
+import net.minestom.server.entity.GameMode;
+import net.minestom.server.entity.ItemEntity;
+import net.minestom.server.entity.LivingEntity;
+import net.minestom.server.entity.Player;
 import net.minestom.server.entity.metadata.other.ArmorStandMeta;
 import net.minestom.server.event.EventDispatcher;
 import net.minestom.server.event.EventFilter;
 import net.minestom.server.event.EventListener;
 import net.minestom.server.event.EventNode;
 import net.minestom.server.event.entity.EntityAttackEvent;
-import net.minestom.server.event.player.*;
+import net.minestom.server.event.player.PlayerChangeHeldSlotEvent;
+import net.minestom.server.event.player.PlayerHandAnimationEvent;
+import net.minestom.server.event.player.PlayerTickEvent;
 import net.minestom.server.event.trait.EntityEvent;
 import net.minestom.server.network.packet.server.play.EntityAnimationPacket;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
@@ -151,7 +159,7 @@ public class AttackManager {
 		
 		boolean sweeping = false;
 		if (!legacy && strongAttack && !critical && !sprintAttack && player.isOnGround()) {
-			double lastMoveDistance = ((EntityAccessor) player).previousPosition().distance(player.getPosition()) * 0.6;
+			double lastMoveDistance = ((Pos) ReflectionUtils.getDeclaredField(player, "previousPosition")).distance(player.getPosition()) * 0.6;
 			if (lastMoveDistance < player.getAttributeValue(Attribute.MOVEMENT_SPEED)) {
 				Tool tool = Tool.fromMaterial(player.getItemInMainHand().getMaterial());
 				if (tool != null && tool.isSword()) {
@@ -225,8 +233,8 @@ public class AttackManager {
 					));
 				});
 			}
-			
-			((EntityAccessor) player).velocity(player.getVelocity().mul(0.6D, 1.0D, 0.6D));
+
+			ReflectionUtils.setFieldValue(player, "velocity", player.getVelocity().mul(0.6D, 1.0D, 0.6D));
 			player.setSprinting(false);
 		}
 		

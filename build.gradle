@@ -11,7 +11,6 @@ repositories {
     maven { url 'https://repo.spongepowered.org/maven' }
     maven { url 'https://repo.velocitypowered.com/snapshots/' }
     maven { url 'https://jitpack.io' }
-    maven { url 'https://repo.minestom.net/repository/maven-public/' }
 }
 
 java {
@@ -20,6 +19,8 @@ java {
 }
 
 dependencies {
-    compileOnly 'com.github.Minestom:Minestom:c5f4ce8515'
-    testImplementation 'com.github.Minestom:Minestom:c5f4ce8515'
+    compileOnly 'com.github.ben-manes.caffeine:caffeine:3.0.5'
+
+    compileOnly 'com.github.Minestom:Minestom:8410de1'
+    testImplementation 'com.github.Minestom:Minestom:8410de1'
 }

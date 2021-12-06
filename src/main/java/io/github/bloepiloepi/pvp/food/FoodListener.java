@@ -2,14 +2,20 @@ package io.github.bloepiloepi.pvp.food;
 
 import io.github.bloepiloepi.pvp.entities.EntityUtils;
 import io.github.bloepiloepi.pvp.entities.Tracker;
-import io.github.bloepiloepi.pvp.mixins.PlayerAccessor;
+import io.github.bloepiloepi.pvp.utils.ReflectionUtils;
 import io.github.bloepiloepi.pvp.utils.SoundManager;
 import it.unimi.dsi.fastutil.Pair;
 import net.kyori.adventure.sound.Sound;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
-import net.minestom.server.event.*;
-import net.minestom.server.event.player.*;
+import net.minestom.server.event.EventFilter;
+import net.minestom.server.event.EventListener;
+import net.minestom.server.event.EventNode;
+import net.minestom.server.event.player.PlayerBlockBreakEvent;
+import net.minestom.server.event.player.PlayerEatEvent;
+import net.minestom.server.event.player.PlayerMoveEvent;
+import net.minestom.server.event.player.PlayerPreEatEvent;
+import net.minestom.server.event.player.PlayerTickEvent;
 import net.minestom.server.event.trait.PlayerEvent;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
@@ -134,7 +140,7 @@ public class FoodListener {
 		FoodComponent component = FoodComponents.fromMaterial(stack.getMaterial());
 		
 		long useTime = getUseTime(component);
-		long usedDuration = System.currentTimeMillis() - ((PlayerAccessor) player).getStartEatingTime();
+		long usedDuration = System.currentTimeMillis() - ((Long) ReflectionUtils.getDeclaredField(player, "startEatingTime"));
 		long usedTicks = usedDuration / MinecraftServer.TICK_MS;
 		long remainingUseTicks = useTime - usedTicks;
 		
