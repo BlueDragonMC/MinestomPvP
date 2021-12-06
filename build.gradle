@@ -27,3 +27,11 @@ dependencies {
     compileOnly 'com.github.Minestom:Minestom:8410de1'
     testImplementation 'com.github.Minestom:Minestom:8410de1'
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
