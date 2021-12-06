@@ -93,7 +93,7 @@ public class EntityUtils {
 		}
 		int millis = ticks * MinecraftServer.TICK_MS;
 		
-		long fireExtinguishTime = living ? (Long) ReflectionUtils.getDeclaredField(livingEntity, "fireExtinguishTime") :
+		long fireExtinguishTime = living ? (Long) ReflectionUtils.getDeclaredField(LivingEntity.class, livingEntity, "fireExtinguishTime") :
 				Tracker.fireExtinguishTime.getOrDefault(entity.getUuid(), 0L);
 		if (System.currentTimeMillis() + millis > fireExtinguishTime) {
 			setFireForDuration(entity, millis, TimeUnit.MILLISECOND);
