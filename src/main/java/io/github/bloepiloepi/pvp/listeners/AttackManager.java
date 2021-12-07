@@ -234,7 +234,7 @@ public class AttackManager {
 				});
 			}
 
-			ReflectionUtils.setFieldValue(Entity.class, player, "velocity", player.getVelocity().mul(0.6D, 1.0D, 0.6D));
+			player.setVelocity(player.getVelocity().mul(0.6D, 1.0D, 0.6D));
 			player.setSprinting(false);
 		}
 		

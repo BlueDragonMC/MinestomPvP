@@ -31,12 +31,4 @@ public class ReflectionUtils {
             return null;
         }
     }
-
-    public static void setFieldValue(Class<?> clazz, Object object, String fieldName, Object value) {
-        try {
-            accessField(clazz, fieldName).set(object, value);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
 }
